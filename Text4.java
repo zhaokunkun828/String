@@ -2,6 +2,7 @@ package com.zsk.rq;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -13,50 +14,31 @@ import java.util.Scanner;
  */
 public class Text4 {
     public static void main(String[] args) throws ParseException {
-        Scanner input = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("请输入一个生产日期:");
+        String dateStr = scanner.nextLine();
 
-        System.out.println("请输入生产日期(格式为yyyy-MM-dd)：");
-        String production = input.nextLine();
+        System.out.println("请输入一个保质期天数:");
+        int days = Integer.parseInt(scanner.nextLine());
 
-        System.out.println("请输入保质期的天数：");
-        int ExpirationDays = input.nextInt();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        //将生产日期转换为Date
+        Date date = sdf.parse(dateStr);
 
-        long times = 24 * 60 * 60 * 1000;//一天的毫秒值
-
-        if (production.matches("[\\d]{4}-[\\d]{1,2}-[\\d]{1,2}")) {
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-            Date productionDate = simpleDateFormat.parse(production);//把输入的日期字符串转换为日期格式
-            Date nowDate = new Date();//获取当前的时间
-
-            System.out.println("当前日期为：" + simpleDateFormat.format(nowDate));
-
-            long pastTime = nowDate.getTime() - productionDate.getTime();//获得输入日期到现在的毫秒值
-            long pastDays = pastTime / (1000 * 60 * 60 * 24);//获取天数
-
-            //算出过期日期的毫秒值
-            long pastDueTime = productionDate.getTime() + times * ExpirationDays;
-            //把过期日期的毫秒值转化为日期格式
-            Date pastDueDate = new Date(pastDueTime);
-
-            System.out.println("你所购买的商品过期日期为：" + simpleDateFormat.format(pastDueDate));
-
-            if (pastDays == ExpirationDays) {//看过去的天数是否等于保质期天数
-                System.out.println("你所购买的商品已过期！");
-
-            }else {//计算输出促销日期，促销日期为:该商品过期日前2周的周三
-
-                //计算促销日期的毫秒值
-                long promoteSaleDateTime = pastDueTime - (times * 11);
-                Date promoteSaleDate = new Date(promoteSaleDateTime);
-
-                System.out.println("该产品促销日期为" + simpleDateFormat.format(promoteSaleDate));
-
-            }
-        }else {
-            System.out.println("格式不正确！");
-        }
+        //创建Calendar计算时间
+        Calendar calendar = Calendar.getInstance();
+        //表示生产日期
+        calendar.setTime(date);
+        //计算过期日
+        calendar.add(Calendar.DAY_OF_YEAR, days);
+        //计算过日期两周前
+        calendar.add(Calendar.DAY_OF_YEAR, -14);
+        //设置为当周周三
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+        //转换为Date
+        date = calendar.getTime();
+        //输出促销日期
+        System.out.println("促销日期:"+sdf.format(date));
 
     }
 }

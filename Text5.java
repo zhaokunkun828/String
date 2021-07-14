@@ -1,6 +1,9 @@
 package com.zsk.rq;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,28 +19,30 @@ import java.util.regex.Pattern;
  */
 public class Text5 {
     public static void main(String[] args) throws ParseException {
-        Scanner input = new Scanner(System.in);
-        System.out.println("请输入你的身份证号：");
-        String birthday = input.nextLine();
-
-        //因为\\w单词字符是任何的字母，数字或者下划线字符,所以[^_]的作用是最后1位数可以是除掉"_"之外的单词字符
-        String regex = "[\\d]{17}[\\w&&[^_]]{1}";
-        Pattern pattern = Pattern.compile(regex);
-
-        Matcher matcher = pattern.matcher(birthday);
-
-        if (matcher.matches()) {
-            //截取输入身份证的年月日
-            int year = Integer.parseInt(birthday.substring(6, 10));
-            int month = Integer.parseInt(birthday.substring(10, 12));
-            int day = Integer.parseInt(birthday.substring(12, 14));
-            System.out.println("你的生日是" + year + "年" + month + "月" + day + "日");
-
-            //得到20岁生日当天的日期
-            int TwentyBirthYear = year + 21;
-            System.out.println("你的21岁生日是" + TwentyBirthYear + "年" + month + "月" + day + "日");
-
-
+        String regex = "\\d{15}(\\d{2}[0-9xX])?";
+        Scanner scanner = new Scanner(System.in);
+        //身份证号的字符串
+        String id = "";
+        while(true){
+            System.out.println("请输入身份证号:");
+            id = scanner.nextLine();
+            if(!id.matches(regex)){
+                System.out.println("请输入正确的身份证号.");
+            }else{
+                break;
+            }
         }
+        //截取生日的部分
+        String birthStr = id.substring(6, 14);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Date birth = sdf.parse(birthStr);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(birth);
+        //calendar.set(Calendar.MONTH,5);
+        calendar.add(Calendar.YEAR, 20);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+        //将计算后的日期按格式输出
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println("日期为:"+sdf1.format(calendar.getTime()));
     }
 }

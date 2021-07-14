@@ -1,6 +1,8 @@
 package com.zsk.rq;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 将当前系统时间以"yyyy-MM-dd HH:mm:ss"格式输出
@@ -9,8 +11,6 @@ import java.time.LocalDateTime;
  */
 public class Text2 {
     public static void main(String[] args) {
-       // String pattern = "yyyy-MM-dd HH:mm:ss";
-        LocalDateTime now = LocalDateTime.now();
-        System.out.println("当前时间：" + now);
+        System.err.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
     }
 }

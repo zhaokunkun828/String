@@ -12,21 +12,18 @@ import java.util.Scanner;
  */
 public class Text3 {
     public static void main(String[] args) throws ParseException {
+        System.out.println("请输入生日:");
+        Scanner scanner = new Scanner(System.in);
+        String birthStr = scanner.nextLine();
+        //将输入的字符串转换为Date
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Scanner sc = new Scanner(System.in);
-        System.out.println("请输入你的生日, 输入格式为:yyyy-MM-dd");
-        String birthday = sc.nextLine();
-
-        if (birthday.matches("[\\d]{4}-[\\d]{2}-[\\d]{2}")) {
-            Date birDate = sdf.parse(birthday);
-            Date now = new Date();
-            long time = now.getTime() - birDate.getTime();
-            long day = time / 1000 / 60 / 60 / 24;
-            long week=day/7;
-            System.out.println("已经过了多少周:" + week+ "周");
-        }else{
-            System.out.println("输入格式错误");
-        }
+        Date birth = sdf.parse(birthStr);
+        //当前系统时间
+        Date now = new Date();
+        //计算相差的时间
+        long time = now.getTime()-birth.getTime();
+        //换算为周
+        time/=1000*60*60*24*7;
+        System.out.println("经过了"+time+"周");
     }
-
 }
