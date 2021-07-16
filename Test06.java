@@ -7,26 +7,32 @@ import java.io.File;
  *
  */
 public class Test06 {
-    public static void main(String[] args) {
-        File dir = new File("Demo");//获取当前目录下的文件以及文件夹的名称
-        printDir(dir);
-    }
 
-    public static void printDir(File dir) {
-        //获取子文件和目录
-        File[] files = dir.listFiles();
-        //循环打印
-        /**
-         * 判断：
-         * 当是文件时，打印绝对路径。
-         * */
-        for (File file : files) {
-            //判断
-            if (file.isFile()) {
-                //是文件，输出文件绝对路径
-                System.out.println("文件名：" + file.getAbsolutePath());
+    public static void main(String[] args) {
+        //路径   这里写一个路径进去
+        String path="D:\\IDE";
+        //调用方法
+        getFiles(path);
+    }
+    private static void getFiles(String path) {
+        File file = new File(path);
+            // 如果这个路径是文件夹
+        if (file.isDirectory()) {
+                // 获取路径下的所有文件
+            File[] files = file.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                // 如果还是文件夹 递归获取里面的文件 文件夹
+                if (files[i].isDirectory()) {
+                    System.out.println("目录：" + files[i].getPath());
+                    getFiles(files[i].getPath());
+                } else {
+                    System.out.println("文件：" + files[i].getPath());
+                }
             }
+        } else {
+            System.out.println("文件：" + file.getPath());
         }
     }
+    }
 
-}
+
